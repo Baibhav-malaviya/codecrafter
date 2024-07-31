@@ -37,6 +37,7 @@ export default async function createAnswerCollection() {
 			50,
 			false
 		),
+		databases.createStringAttribute(db, answerCollection, "authorId", 50, true),
 		databases.createBooleanAttribute(
 			db,
 			answerCollection,

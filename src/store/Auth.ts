@@ -2,7 +2,8 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 
-import { AppwriteException, ID, Models } from "node-appwrite";
+import { ID, Models } from "node-appwrite";
+import { AppwriteException } from "appwrite";
 
 import { account } from "@/models/client/config";
 
@@ -30,7 +31,7 @@ interface IAuthStore {
 	logout(): Promise<void>;
 }
 
-export const useStore = create<IAuthStore>()(
+export const useAuthStore = create<IAuthStore>()(
 	persist(
 		immer((set) => ({
 			session: null,
