@@ -7,7 +7,10 @@ import { ID } from "node-appwrite";
 export async function POST(request: NextRequest) {
 	try {
 		// collecting data
-		const { answer, questionId, attachmentId, authorId } = await request.json();
+		const data = await request.json();
+
+		const { answer, questionId, attachmentId, authorId } = await data;
+
 		// creating answer document
 		const response = await databases.createDocument(
 			db,
@@ -24,6 +27,7 @@ export async function POST(request: NextRequest) {
 
 		// increasing user reputation
 		const prefs = await users.getPrefs(authorId);
+		console.log("userPrefs: ", prefs);
 		await users.updatePrefs(authorId, {
 			reputation: Number(prefs.reputation) + 1,
 		});
@@ -37,8 +41,10 @@ export async function POST(request: NextRequest) {
 			{ status: 201 }
 		);
 	} catch (error: any) {
+		console.log("Error in creating answer");
 		return NextResponse.json(
 			{
+				success: false,
 				error: error?.message || "Error CREATING answer",
 			},
 			{ status: error?.status || error.code || 500 }

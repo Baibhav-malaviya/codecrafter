@@ -1,19 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
-const MenuItem = ({
-	item,
-	href,
-	isActive,
-}: {
-	item: any;
-	href: any;
-	isActive: any;
-}) => {
+interface MenuItemProps {
+	item: string;
+	href: string;
+	isActive: boolean;
+}
+
+const MenuItem: React.FC<MenuItemProps> = ({ item, href, isActive }) => {
 	return (
-		<Link href={href}>
+		<Link href={href} passHref>
 			<motion.div
 				className={`px-4 py-2 rounded-full transition-all duration-300 ease-in-out ${
 					isActive ? "bg-white text-black" : "text-white hover:bg-white/10"
@@ -27,9 +26,9 @@ const MenuItem = ({
 	);
 };
 
-const NavbarLoggedIn = () => {
-	const [activeItem, setActiveItem] = useState("Home");
+const NavbarLoggedIn: React.FC = () => {
 	const [scrolled, setScrolled] = useState(false);
+	const pathname = usePathname();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -62,7 +61,7 @@ const NavbarLoggedIn = () => {
 						key={item.name}
 						item={item.name}
 						href={item.href}
-						isActive={activeItem === item.name}
+						isActive={pathname === item.href}
 					/>
 				))}
 			</nav>

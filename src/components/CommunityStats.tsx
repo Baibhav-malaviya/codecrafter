@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, MessageSquare, HelpCircle } from "lucide-react";
 import NumberTicker from "@/components/magicui/number-ticker";
+import DotPattern from "./magicui/dot-pattern";
+import { cn } from "@/lib/utils";
 
 type CommunityStatsType = {
 	questions: number;
@@ -10,7 +12,7 @@ type CommunityStatsType = {
 
 const CommunityStats = ({ stats }: { stats: CommunityStatsType }) => {
 	return (
-		<section className="py-20 bg-gradient-to-r from-purple-50 to-blue-50">
+		<section className="py-20 bg-gradient-to-r from-purple-50 to-blue-50 ">
 			<div className="container mx-auto px-4 text-center">
 				<h3 className="text-3xl font-bold mb-12 text-gray-800">
 					Community Stats
@@ -46,7 +48,7 @@ const StatCard = ({
 	value: number;
 	icon: React.ReactNode;
 }) => (
-	<Card className="transform transition-transform hover:scale-105">
+	<Card className="transform transition-transform hover:scale-105 relative">
 		<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 			<CardTitle className="text-sm font-medium text-gray-500">
 				{title}
@@ -58,6 +60,11 @@ const StatCard = ({
 				<NumberTicker value={value} />
 			</div>
 		</CardContent>
+		<DotPattern
+			className={cn(
+				"[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]"
+			)}
+		/>
 	</Card>
 );
 

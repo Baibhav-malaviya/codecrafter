@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import ShinyButton from "@/components/magicui/shiny-button";
+import QuestionDisplay from "../components/QuestionDisplay";
 
 function Page() {
 	return (
@@ -16,7 +17,7 @@ function Page() {
 
 			<div className="space-y-4">
 				{/* Future components will be added here */}
-				<div>This is the page dedicated to show the latest questions</div>
+				{/* <QuestionDisplay content={questionContent} /> */}
 			</div>
 		</div>
 	);

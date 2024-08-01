@@ -1,35 +1,29 @@
-"use client";
-import dynamic from "next/dynamic";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MarkdownPreview } from "@/components/RTE";
+import { FC } from "react";
 
-// const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
-import React from "react";
-import MDEditor from "@uiw/react-md-editor/nohighlight";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
+// Sample question content
+const questionContent = `
+# How to display Markdown content in React?
+
+I am using MDEditor to create my questions. How can I display the content as HTML?
+
+- Install \`react-markdown\`
+- Use \`ReactMarkdown\` component
+- Enable plugins like \`remark-gfm\` for GitHub flavored Markdown support
+`;
 
 interface QuestionDisplayProps {
-	title: string;
-	question: string;
+	content: string;
 }
 
-const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
-	title,
-	question,
-}) => {
+const QuestionDisplay: FC<QuestionDisplayProps> = ({ content }) => {
 	return (
-		<Card className="w-full max-w-2xl bg-card text-card-foreground">
-			<Link href={"/question/ask"}>Ask Question</Link>
-			<CardHeader>
-				<CardTitle>{title}</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<MDEditor.Markdown
-					source={question}
-					style={{ whiteSpace: "pre-wrap" }}
-				/>
-			</CardContent>
-		</Card>
+		<div className="prose prose-lg max-w-none" data-color-mode="light">
+			<MarkdownPreview
+				className="rounded-xl p-4 bg-green-400"
+				source={content}
+			/>
+		</div>
 	);
 };
 
