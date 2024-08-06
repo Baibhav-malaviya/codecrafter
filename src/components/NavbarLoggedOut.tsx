@@ -14,8 +14,10 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, href, isActive }) => {
 	return (
 		<Link href={href} passHref>
 			<motion.div
-				className={`px-4 py-2 rounded-full transition-all duration-300 ease-in-out ${
-					isActive ? "bg-white text-black" : "text-white hover:bg-white/10"
+				className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+					isActive
+						? "bg-primary text-white"
+						: "text-gray-300 hover:bg-primary/30 hover:text-black"
 				}`}
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
@@ -41,20 +43,21 @@ const NavbarLoggedOut: React.FC = () => {
 
 	const menuItems = [
 		{ name: "Home", href: "/" },
+		{ name: "Question", href: "/question" },
 		{ name: "Register", href: "/register" },
 		{ name: "Login", href: "/login" },
 	];
 
 	return (
 		<motion.header
-			className={`fixed top-0 left-0 right-0 z-50 flex justify-center py-4 transition-all duration-300 ease-in-out ${
-				scrolled ? "bg-black/50 backdrop-blur-md" : "bg-transparent"
+			className={`fixed top-0 left-0 right-0 z-50 flex justify-center py-4 transition-colors duration-300 ease-in-out ${
+				scrolled ? "bg-white shadow-lg" : "bg-transparent"
 			}`}
 			initial={{ y: -100 }}
 			animate={{ y: 0 }}
 			transition={{ type: "spring", stiffness: 300, damping: 30 }}
 		>
-			<nav className="flex items-center space-x-2 px-4 py-2 rounded-full bg-black/30 backdrop-blur-sm">
+			<nav className="flex items-center space-x-4 px-4 py-2 rounded-md bg-white shadow-md backdrop-blur-sm">
 				{menuItems.map((item) => (
 					<MenuItem
 						key={item.name}

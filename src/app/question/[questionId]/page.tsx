@@ -1,33 +1,32 @@
+// pages/Page.tsx
 "use client";
-// import { useParams } from "next/navigation";
-// import React from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-// function Page() {
-// 	const params = useParams();
-
-// 	return <div>Question: {params.questionId}</div>;
-// }
-
-// export default Page;
-
-import QuestionDisplay from "@/app/components/QuestionDisplay";
-
+import AnswerDisplay from "@/app/components/AnswerDisplay";
+import VoteButton from "@/app/components/VoteButton";
 import { FC } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown } from "lucide-react";
-import AnswerDisplay from "@/app/components/AnswerDisplay";
+import { Badge } from "@/components/ui/badge";
+import MarkdownDisplay from "@/app/components/MarkdownDisplay";
+import PageSkeleton from "../components/PageSkeleton";
+import { useAuthStore } from "@/store/Auth";
 
-const questionContent = `
-# How to display Markdown content in React?
-
-I am using MDEditor to create my questions. How can I display the content as HTML?
-
-- Install \`react-markdown\`
-- Use \`ReactMarkdown\` component
-- Enable plugins like \`remark-gfm\` for GitHub flavored Markdown support
-`;
+interface AnswerProps {
+	$id: string;
+	content: string;
+	votes: number;
+	author: {
+		authorId: string;
+		name: string;
+		email: string;
+	};
+	onUpvote: () => void;
+	onDownvote: () => void;
+}
 
 interface QuestionProps {
 	title: string;
@@ -35,7 +34,7 @@ interface QuestionProps {
 	tags: string[];
 	attachmentId?: string;
 	authorId: string;
-	id: string;
+	$id: string;
 	tenant: string;
 	createdAt: string;
 	updatedAt: string;
@@ -45,62 +44,123 @@ interface QuestionProps {
 	popularity: number;
 }
 
-const Page: FC<QuestionProps> = ({
-	title,
-	content = questionContent,
-	tags,
-	popularity,
-}) => {
+const Page: FC = () => {
+	const params = useParams();
+	const { user } = useAuthStore();
+	const [question, setQuestion] = useState<QuestionProps | null>(null);
+	const [answers, setAnswers] = useState<AnswerProps[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchQuestion = async () => {
+			try {
+				const response = await axios.get(`/api/question/${params.questionId}`);
+				setQuestion(response.data.response);
+			} catch (error) {
+				console.error("Error fetching question:", error);
+			}
+		};
+
+		const fetchAnswers = async () => {
+			try {
+				const response = await axios.get(`/api/answer/${params.questionId}`);
+				setAnswers(response.data.response);
+				console.log("Answers: ", answers);
+			} catch (error) {
+				console.error("Error fetching answers:", error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchQuestion();
+		fetchAnswers();
+	}, [params.questionId]);
+
+	if (loading) {
+		return (
+			<div className="space-y-4">
+				<PageSkeleton />
+			</div>
+		);
+	}
+
 	return (
-		<div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-			<div className="mb-4">
-				<h1 className="text-2xl font-bold">{title}</h1>
-			</div>
-			<div className="markdown-body mb-6">
-				<QuestionDisplay content={content} />
-			</div>
-			{tags && (
-				<div className="mb-6">
-					{tags.map((tag) => (
-						<span
-							key={tag}
-							className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-2"
-						>
-							{tag}
-						</span>
-					))}
-				</div>
+		<div className="container mx-auto p-4">
+			{question ? (
+				<>
+					<div className="mb-4">
+						<h1 className="text-2xl font-bold">{question.title}</h1>
+					</div>
+					<MarkdownDisplay content={question.content} />
+					{question.tags.length > 0 && (
+						<div className="mb-6 space-x-1">
+							{question.tags.map((tag) => (
+								<Badge key={tag}>{tag}</Badge>
+							))}
+						</div>
+					)}
+					<div className="flex items-center mb-6 mt-4 space-x-4">
+						<VoteButton
+							voterId={user!.$id} // replace with actual voter ID from your auth system
+							postId={question.$id}
+							postType="question"
+						/>
+						<span>{question.popularity}</span>
+					</div>
+					<div className="mb-6">
+						<Textarea
+							placeholder="Write your answer here..."
+							className="w-full mb-2"
+						/>
+						<Button>Submit Answer</Button>
+					</div>
+					<div>
+						<h2 className="text-xl font-bold mb-4">Comments</h2>
+						<div className="mb-4">
+							<Input placeholder="Write a comment..." className="w-full mb-2" />
+							<Button>Submit Comment</Button>
+						</div>
+						{answers.length === 0 ? (
+							<div className="flex items-center justify-center py-2">
+								<div>
+									<svg
+										className="w-52 h-52 text-gray-500/20 mx-auto mb-4"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											d="M15 17h5l-1.403-4.209A2 2 0 0016.65 11H9.35a2 2 0 00-1.947 1.791L6 17h5m3 0v-6m-3 6h.01"
+										></path>
+									</svg>
+									<p className="text-center text-gray-700/30 font-bold text-3xl">
+										No answers yet. Be the first to answer!
+									</p>
+								</div>
+							</div>
+						) : (
+							answers.map((answer: any, index) => {
+								// console.log("Particular answer: ", answer.$id);
+								return (
+									<AnswerDisplay
+										key={index}
+										id={answer.$id}
+										content={answer.content}
+										author={answer.author}
+									/>
+								);
+							})
+						)}
+					</div>
+				</>
+			) : (
+				<p className="text-gray-500">Question not found.</p>
 			)}
-			<div className="flex items-center mb-6">
-				<Button className="flex items-center mr-2">
-					<ArrowUp size={18} />
-				</Button>
-				<span>{popularity}</span>
-				<Button className="flex items-center ml-2">
-					<ArrowDown size={18} />
-				</Button>
-			</div>
-			<div className="mb-6">
-				<Textarea
-					placeholder="Write your answer here..."
-					className="w-full mb-2"
-				/>
-				<Button>Submit Answer</Button>
-			</div>
-			<div>
-				<h2 className="text-xl font-bold mb-4">Comments</h2>
-				<div className="mb-4">
-					<Input placeholder="Write a comment..." className="w-full mb-2" />
-					<Button>Submit Comment</Button>
-				</div>
-				{/* Display comments here */}
-				<AnswerDisplay
-					content={questionContent}
-					votes={5}
-					onDownvote={() => alert("upvoted")}
-					onUpvote={() => alert("downvoted")}
-				/>
-			</div>
 		</div>
 	);
 };

@@ -124,7 +124,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 			(a, b) => (b.popularity || 0) - (a.popularity || 0)
 		);
 
-		return NextResponse.json(sortedQuestions.slice(0, limit)); // Return top 10 popular questions
+		return NextResponse.json({
+			message: "Successfully fetched popular question",
+			success: true,
+			data: sortedQuestions.slice(0, limit),
+		}); // Return top 10 popular questions
 	} catch (error: any) {
 		return NextResponse.json(
 			{

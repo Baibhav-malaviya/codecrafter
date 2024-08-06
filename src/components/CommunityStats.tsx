@@ -4,15 +4,15 @@ import NumberTicker from "@/components/magicui/number-ticker";
 import DotPattern from "./magicui/dot-pattern";
 import { cn } from "@/lib/utils";
 
-type CommunityStatsType = {
-	questions: number;
-	answers: number;
-	users: number;
+const stats = {
+	questions: 1200,
+	answers: 3400,
+	users: 900,
 };
 
-const CommunityStats = ({ stats }: { stats: CommunityStatsType }) => {
+const CommunityStats = () => {
 	return (
-		<section className="py-20 bg-gradient-to-r from-purple-50 to-blue-50 ">
+		<section className="py-20  ">
 			<div className="container mx-auto px-4 text-center">
 				<h3 className="text-3xl font-bold mb-12 text-gray-800">
 					Community Stats
@@ -50,7 +50,7 @@ const StatCard = ({
 }) => (
 	<Card className="transform transition-transform hover:scale-105 relative">
 		<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-			<CardTitle className="text-sm font-medium text-gray-500">
+			<CardTitle className="text-lg font-semibold text-gray-500">
 				{title}
 			</CardTitle>
 			{icon}

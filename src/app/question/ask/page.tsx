@@ -72,7 +72,10 @@ const AskQuestion: React.FC = () => {
 				question,
 				attachmentId,
 				authorId: session?.$id, // Replace with actual user ID
-				tags: tags.split(",").map((tag) => tag.trim()),
+				tags: tags
+					.split(",")
+					.map((tag) => tag.trim())
+					.filter((tag) => tag !== ""), // if the input field is empty string ("")
 			};
 
 			console.log("Form data:", formData);
