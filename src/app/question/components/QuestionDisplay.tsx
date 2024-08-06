@@ -47,13 +47,7 @@ const QuestionDisplay: React.FC<QuestionProps> = ({ question }) => {
 				</section>
 				<footer className="flex flex-wrap justify-between items-center">
 					<div className="flex items-center space-x-2">
-						<button className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors">
-							<ThumbsUp className="w-4 h-4" />
-							<span>{question.votesCount}</span>
-						</button>
-						<button className="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition-colors">
-							<ThumbsDown className="w-4 h-4" />
-						</button>
+						{question.votesCount} votes
 					</div>
 					<div className="flex items-center space-x-1 mt-2 md:mt-0">
 						{question.tags.length > 0 &&

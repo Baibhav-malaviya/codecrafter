@@ -58,7 +58,7 @@ const NavbarLoggedIn: React.FC = () => {
 
 	return (
 		<motion.header
-			className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center py-4 px-6 transition-all duration-300 ease-in-out ${
+			className={`fixed top-0 left-0 border-b-[1px] border-gray-400 right-0 z-50 flex justify-between items-center py-4 px-6 transition-all duration-300 ease-in-out ${
 				scrolled ? "bg-white " : "bg-transparent"
 			}`}
 			initial={{ y: -100 }}

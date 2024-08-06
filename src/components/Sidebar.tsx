@@ -40,7 +40,7 @@ const Sidebar: React.FC = () => {
 	];
 
 	return (
-		<aside className="w-48 fixed top-10 left-0 bottom-32 bg-white z-30">
+		<aside className="w-48 fixed border-r-[1px] border-gray-400 top-10 left-0 bottom-32 bg-white z-30">
 			<div className="flex flex-col h-full">
 				<nav className="flex-1 pt-16">
 					{" "}
