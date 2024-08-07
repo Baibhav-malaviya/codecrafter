@@ -3,14 +3,16 @@
 import { FC, useState, useEffect, useCallback } from "react";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import axios from "axios";
+import { useAuthStore } from "@/store/Auth";
 
 interface VoteButtonProps {
-	voterId: string;
+	voterId?: string;
 	postId: string;
 	postType: "answer" | "question";
 }
 
 const VoteButton: FC<VoteButtonProps> = ({ voterId, postId, postType }) => {
+	const { user } = useAuthStore();
 	const [voteType, setVoteType] = useState<"upvote" | "downvote" | null>(null);
 	const [voteCount, setVoteCount] = useState(0);
 
@@ -52,6 +54,7 @@ const VoteButton: FC<VoteButtonProps> = ({ voterId, postId, postType }) => {
 	const handleVote = useCallback(
 		async (type: "upvote" | "downvote") => {
 			try {
+				if (!user) alert("Log in to vote");
 				const response = await axios.post("/api/vote", {
 					voterId,
 					postId,
@@ -69,7 +72,7 @@ const VoteButton: FC<VoteButtonProps> = ({ voterId, postId, postType }) => {
 				console.error("Error processing vote:", error);
 			}
 		},
-		[voterId, postId, postType]
+		[voterId, postId, postType, user]
 	);
 
 	return (

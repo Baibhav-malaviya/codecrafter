@@ -9,6 +9,8 @@ export async function POST(request: NextRequest) {
 		// collecting data
 		const data = await request.json();
 
+		console.log("data in create answer api route: ", data);
+
 		const { answer, questionId, attachmentId, authorId } = await data;
 
 		// creating answer document

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import { useAuthStore } from "@/store/Auth";
 
 interface MenuItemProps {
 	item: string;
@@ -34,6 +35,8 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, href, isActive }) => {
 const NavbarLoggedIn: React.FC = () => {
 	const [scrolled, setScrolled] = useState(false);
 	const pathname = usePathname();
+	const { logout } = useAuthStore();
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -51,9 +54,16 @@ const NavbarLoggedIn: React.FC = () => {
 		{ name: "Contact", href: "/contact" },
 	];
 
-	const handleLogout = () => {
-		// Implement your logout logic here
-		console.log("Logging out...");
+	const handleLogout = async () => {
+		try {
+			setIsLoading(true);
+			await logout();
+			alert("logout successfully");
+		} catch (error) {
+			console.log("Error in logout handler");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -107,7 +117,7 @@ const NavbarLoggedIn: React.FC = () => {
 							onClick={handleLogout}
 							className="w-full mt-4"
 						>
-							Logout
+							{isLoading ? "Logout..." : "Logout"}
 						</Button>
 					</div>
 				</SheetContent>

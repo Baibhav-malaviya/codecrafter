@@ -3,14 +3,13 @@
 import { FC } from "react";
 import { format } from "date-fns";
 import VoteButton from "@/app/components/VoteButton";
-import { Badge } from "@/components/ui/badge";
 import MarkdownDisplay from "@/app/components/MarkdownDisplay";
 import { useAuthStore } from "@/store/Auth";
 
 interface AnswerProps {
 	id: string;
 	content: string;
-	author: {
+	author?: {
 		authorId: string;
 		name: string;
 		email: string;
@@ -25,7 +24,7 @@ const AnswerDisplay: FC<AnswerProps> = ({ id, content, author }) => {
 		<article className="max-w-3xl mx-auto my-4 p-4 bg-white shadow-md rounded-lg">
 			<header className="mb-2 border-b pb-2">
 				<div className="mt-1 text-gray-500 text-sm">
-					By {author.name} on {formattedDate}
+					By {author?.name} on {formattedDate}
 				</div>
 			</header>
 			<section className="mb-4">

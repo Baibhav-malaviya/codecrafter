@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import MarkdownDisplay from "@/app/components/MarkdownDisplay";
 import PageSkeleton from "../components/PageSkeleton";
 import { useAuthStore } from "@/store/Auth";
+import SubmitAnswer from "../components/SubmitAnswer";
 
 interface AnswerProps {
 	$id: string;
@@ -49,7 +50,7 @@ const Page: FC = () => {
 	const { user } = useAuthStore();
 	const [question, setQuestion] = useState<QuestionProps | null>(null);
 	const [answers, setAnswers] = useState<AnswerProps[]>([]);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const fetchQuestion = async () => {
@@ -65,7 +66,6 @@ const Page: FC = () => {
 			try {
 				const response = await axios.get(`/api/answer/${params.questionId}`);
 				setAnswers(response.data.response);
-				console.log("Answers: ", answers);
 			} catch (error) {
 				console.error("Error fetching answers:", error);
 			} finally {
@@ -75,7 +75,7 @@ const Page: FC = () => {
 
 		fetchQuestion();
 		fetchAnswers();
-	}, [params.questionId]);
+	}, [params.questionId, answers]);
 
 	if (loading) {
 		return (
@@ -102,19 +102,18 @@ const Page: FC = () => {
 					)}
 					<div className="flex items-center mb-6 mt-4 space-x-4">
 						<VoteButton
-							voterId={user!.$id} // replace with actual voter ID from your auth system
+							voterId={user?.$id} // replace with actual voter ID from your auth system
 							postId={question.$id}
 							postType="question"
 						/>
 						<span>{question.popularity}</span>
 					</div>
-					<div className="mb-6">
-						<Textarea
-							placeholder="Write your answer here..."
-							className="w-full mb-2"
-						/>
-						<Button>Submit Answer</Button>
-					</div>
+
+					<SubmitAnswer
+						answer="answer for testing purpose"
+						questionId={params.questionId}
+						authorId={user!.$id}
+					/>
 					<div>
 						<h2 className="text-xl font-bold mb-4">Comments</h2>
 						<div className="mb-4">

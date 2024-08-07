@@ -26,7 +26,7 @@ import TagsInput from "../components/TagsInput";
 import ErrorMessage from "../components/ErrorMessage";
 
 const AskQuestion: React.FC = () => {
-	const { session } = useAuthStore();
+	const { user } = useAuthStore();
 	const [title, setTitle] = useState("");
 	const [question, setQuestion] = useState("**Enter your question here**");
 	const [attachment, setAttachment] = useState<File | null>(null);
@@ -71,7 +71,7 @@ const AskQuestion: React.FC = () => {
 				title,
 				question,
 				attachmentId,
-				authorId: session?.$id, // Replace with actual user ID
+				authorId: user?.$id, // Replace with actual user ID
 				tags: tags
 					.split(",")
 					.map((tag) => tag.trim())
