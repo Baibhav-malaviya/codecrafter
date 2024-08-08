@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
 				isAccepted: false,
 			}
 		);
+		const author = await users.get(response.authorId);
 
 		// increasing user reputation
 		const prefs = await users.getPrefs(authorId);
@@ -38,7 +39,14 @@ export async function POST(request: NextRequest) {
 			{
 				success: true,
 				message: "Answer created",
-				response,
+				response: {
+					...response,
+					author: {
+						authorId: author.$id,
+						name: author.name,
+						email: author.email,
+					},
+				},
 			},
 			{ status: 201 }
 		);

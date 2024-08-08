@@ -21,7 +21,7 @@ const AnswerDisplay: FC<AnswerProps> = ({ id, content, author }) => {
 	const { user } = useAuthStore();
 
 	return (
-		<article className="max-w-3xl mx-auto my-4 p-4 bg-white shadow-md rounded-lg">
+		<article className="w-full mx-auto my-4 p-4 bg-white shadow-md rounded-lg">
 			<header className="mb-2 border-b pb-2">
 				<div className="mt-1 text-gray-500 text-sm">
 					By {author?.name} on {formattedDate}

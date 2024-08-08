@@ -3,13 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 
+import { AnswerProps } from "../[questionId]/page";
+
 interface SubmitAnswerProps {
 	answer: string;
 	questionId: string | string[];
-	authorId: string;
+	authorId?: string;
+	answers: AnswerProps[];
+	setAnswers: React.Dispatch<React.SetStateAction<AnswerProps[]>>;
 }
 
-const SubmitAnswer = ({ answer, questionId, authorId }: SubmitAnswerProps) => {
+const SubmitAnswer = ({
+	answer,
+	questionId,
+	authorId,
+	answers,
+	setAnswers,
+}: SubmitAnswerProps) => {
 	const [answerText, setAnswerText] = useState(answer || "");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -31,6 +41,9 @@ const SubmitAnswer = ({ answer, questionId, authorId }: SubmitAnswerProps) => {
 				console.log("Answer submitted successfully");
 				// Handle successful submission (e.g., clear the form, show a success message, etc.)
 				setAnswerText(""); // Clear the textarea
+
+				// Append the new answer to the existing list of answers
+				setAnswers([...answers, response.data.response]);
 			} else {
 				console.error("Failed to submit the answer");
 				setError("Failed to submit the answer. Please try again.");
