@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useAuthStore } from "@/store/Auth";
+import AskButton from "@/app/question/components/AskButton";
 
 interface MenuItemProps {
 	item: string;
@@ -85,43 +86,46 @@ const NavbarLoggedIn: React.FC = () => {
 					/>
 				))}
 			</nav>
-			<Sheet>
-				<SheetTrigger asChild>
-					<div className="flex items-center cursor-pointer">
-						<Avatar>
-							<AvatarImage src="https://github.com/shadcn.png" />
-							<AvatarFallback>CN</AvatarFallback>
-						</Avatar>
-					</div>
-				</SheetTrigger>
-				<SheetContent className="w-48 p-4 space-y-4 bg-white shadow-md">
-					<h3 className="text-lg font-bold">User Menu</h3>
-					<div className="space-y-2">
-						<MenuItem
-							item="Profile"
-							href="/profile"
-							isActive={pathname === "/profile"}
-						/>
-						<MenuItem
-							item="Settings"
-							href="/settings"
-							isActive={pathname === "/settings"}
-						/>
-						<MenuItem
-							item="Help"
-							href="/help"
-							isActive={pathname === "/help"}
-						/>
-						<Button
-							variant="destructive"
-							onClick={handleLogout}
-							className="w-full mt-4"
-						>
-							{isLoading ? "Logout..." : "Logout"}
-						</Button>
-					</div>
-				</SheetContent>
-			</Sheet>
+			<div className="flex gap-2">
+				<AskButton />
+				<Sheet>
+					<SheetTrigger asChild>
+						<div className="flex items-center cursor-pointer">
+							<Avatar>
+								<AvatarImage src="https://github.com/shadcn.png" />
+								<AvatarFallback>CN</AvatarFallback>
+							</Avatar>
+						</div>
+					</SheetTrigger>
+					<SheetContent className="w-48 p-4 space-y-4 bg-white shadow-md">
+						<h3 className="text-lg font-bold">User Menu</h3>
+						<div className="space-y-2">
+							<MenuItem
+								item="Profile"
+								href="/profile"
+								isActive={pathname === "/profile"}
+							/>
+							<MenuItem
+								item="Settings"
+								href="/settings"
+								isActive={pathname === "/settings"}
+							/>
+							<MenuItem
+								item="Help"
+								href="/help"
+								isActive={pathname === "/help"}
+							/>
+							<Button
+								variant="destructive"
+								onClick={handleLogout}
+								className="w-full mt-4"
+							>
+								{isLoading ? "Logout..." : "Logout"}
+							</Button>
+						</div>
+					</SheetContent>
+				</Sheet>
+			</div>
 		</motion.header>
 	);
 };

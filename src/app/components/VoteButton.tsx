@@ -54,7 +54,10 @@ const VoteButton: FC<VoteButtonProps> = ({ voterId, postId, postType }) => {
 	const handleVote = useCallback(
 		async (type: "upvote" | "downvote") => {
 			try {
-				if (!user) alert("Log in to vote");
+				if (!user) {
+					alert("Log in to vote");
+					return;
+				}
 				const response = await axios.post("/api/vote", {
 					voterId,
 					postId,

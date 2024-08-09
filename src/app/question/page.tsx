@@ -1,11 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import ShinyButton from "@/components/magicui/shiny-button";
 import { getQuestion } from "@/lib/appwrite/question";
 import QuestionDisplay from "./components/QuestionDisplay"; // Ensure this path is correct
 import { Question } from "./components/QuestionDisplay";
 import QuestionDisplaySkeleton from "./components/QuestionDisplaySkelton";
+import AskButton from "./components/AskButton";
 
 const Page: React.FC = () => {
 	const [questions, setQuestions] = useState<Question[]>([]);
@@ -40,9 +39,7 @@ const Page: React.FC = () => {
 		<div className="container mx-auto p-4">
 			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-2xl font-bold">Latest Questions</h1>
-				<Link href="/question/ask">
-					<ShinyButton text="Ask Question" />
-				</Link>
+				<AskButton />
 			</div>
 			{error && <p>{error}</p>}
 			<div className="space-y-4">

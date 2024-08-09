@@ -32,7 +32,7 @@ const AnswerDisplay: FC<AnswerProps> = ({ id, content, author }) => {
 			</section>
 			<footer className="flex items-center space-x-2">
 				<VoteButton
-					voterId={user!.$id} // replace with actual voter ID from your auth system
+					voterId={user?.$id} // replace with actual voter ID from your auth system
 					postId={id}
 					postType="answer"
 				/>

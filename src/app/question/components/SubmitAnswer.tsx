@@ -1,9 +1,11 @@
+"use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 
 import { AnswerProps } from "../[questionId]/page";
+import { useAuthStore } from "@/store/Auth";
 
 interface SubmitAnswerProps {
 	answer: string;
@@ -23,8 +25,13 @@ const SubmitAnswer = ({
 	const [answerText, setAnswerText] = useState(answer || "");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const { user } = useAuthStore();
 
 	const handleSubmit = async () => {
+		if (!user) {
+			alert("log in to submit answer");
+			return;
+		}
 		setLoading(true);
 		setError(null);
 

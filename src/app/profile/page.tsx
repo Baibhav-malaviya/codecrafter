@@ -1,7 +1,14 @@
+"use client";
 // pages/profile.tsx
 import React from "react";
+import { useAuthStore } from "@/store/Auth";
+import PageLoader from "next/dist/client/page-loader";
 
 const Profile: React.FC = () => {
+	const { user } = useAuthStore();
+
+	if (!user) return <div>Loading... your profile</div>;
+
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold mb-4">Profile</h1>
@@ -10,10 +17,10 @@ const Profile: React.FC = () => {
 				<h2 className="text-xl font-semibold mb-2">Profile Information</h2>
 				<div className="bg-gray-100 p-4 rounded-md">
 					<p>
-						<strong>Name:</strong> John Doe
+						<strong>Name:</strong> {user.name}
 					</p>
 					<p>
-						<strong>Email:</strong> john.doe@example.com
+						<strong>Email:</strong> {user.email}
 					</p>
 					{/* Add more user info here */}
 				</div>

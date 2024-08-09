@@ -22,7 +22,7 @@ import { format } from "date-fns";
 export interface AnswerProps {
 	$id: string;
 	content: string;
-	author: {
+	author?: {
 		authorId: string;
 		name: string;
 		email: string;
@@ -111,6 +111,10 @@ const Page: FC = () => {
 	//! comment submit handler
 	const handleCommentSubmit = async () => {
 		try {
+			if (!user) {
+				alert("log in to comment");
+				return;
+			}
 			const response = await axios.post(`/api/comment`, {
 				comment: newComment,
 				postId: params.questionId,

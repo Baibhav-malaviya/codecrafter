@@ -14,11 +14,6 @@ import { ID } from "node-appwrite";
 import axios from "axios";
 import { useAuthStore } from "@/store/Auth";
 
-// import TitleInput from "./TitleInput";
-// import QuestionInput from "./QuestionInput";
-// import AttachmentInput from "./AttachmentInput";
-// import TagsInput from "./TagsInput";
-// import ErrorMessage from "./ErrorMessage";
 import TitleInput from "../components/TitleInput";
 import QuestionInput from "../components/QuestionInput";
 import AttachmentInput from "../components/AttachmentInput";
@@ -42,6 +37,10 @@ const AskQuestion: React.FC = () => {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 
+		if (!user) {
+			alert("Login to ask question");
+			return;
+		}
 		// Validate that title and question are not empty
 		if (
 			!title.trim() ||
