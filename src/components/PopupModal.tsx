@@ -1,5 +1,6 @@
 import React from "react";
 import { X } from "lucide-react";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 interface ModalProps {
 	isOpen: boolean;
@@ -10,8 +11,10 @@ interface ModalProps {
 const PopupModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 	if (!isOpen) return null;
 
+	const ref = useOutsideClick<HTMLDivElement>(onClose);
+
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+		<div ref={ref} className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
 			<div className="bg-white p-4 rounded-md shadow-lg max-w-md w-full max-h-full overflow-y-auto">
 				<div className="flex justify-end">
 					<button
