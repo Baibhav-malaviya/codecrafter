@@ -1,5 +1,8 @@
 // pages/api/getUserVote.ts
 
+export const dynamic = "force-dynamic";
+
+
 import { db, voteCollection } from "@/models/name";
 import { databases } from "@/models/server/config";
 import { NextRequest, NextResponse } from "next/server";
